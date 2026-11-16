@@ -180,3 +180,4 @@ output/long_term_uc/data_*
 output/long_term_uc/figures_*
 output/long_term_uc/monozone_*/
 output/toy_model_*/
+output/*
