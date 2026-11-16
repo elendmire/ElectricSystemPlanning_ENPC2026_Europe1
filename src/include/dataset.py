@@ -39,8 +39,8 @@ from src.utils.dir_utils import uniformize_path_os
 from src.utils.eraa_data_reader import filter_input_data, gen_capa_pt_str_sanitizer, select_interco_capas, \
     set_aggreg_cf_prod_types_data, read_and_process_hydro_data, read_and_process_hydro_data_from_input_folder
 from src.utils.write import json_dump
-from utils.dates import get_hours_nber_between_dates
-from utils.read import check_and_load_json_file
+from src.utils.dates import get_hours_nber_between_dates
+from src.utils.read import check_and_load_json_file
 
 N_SPACES_MSG = 2
 PROD_TYPE_AGG_COL = f'{COLUMN_NAMES.production_type}_agg'
