@@ -129,6 +129,19 @@ python main_runner.py --test --dry-run
 make runner-test
 ```
 
+### Clearing Previous Runner Outputs & History
+To prevent historical runs from blurring or polluting subsequent incremental simulation results when presenting iterative updates:
+```bash
+# Clear all output files in output/runner/ via Python CLI
+python main_runner.py --clean
+# or using positional keyword:
+python main_runner.py clean
+
+# Or via Makefile shortcut
+make runner-clean
+```
+You can also combine `--clean` with simulation flags (e.g., `python main_runner.py --clean --test`) to clean previous outputs before starting a fresh run.
+
 ### Custom Files or Folders
 You can also specify a custom collection directory or specific files:
 ```bash
@@ -142,6 +155,9 @@ make runner-dry-run
 
 # Run fast test simulation (2 weeks)
 make runner-test
+
+# Clear previous simulation outputs and history
+make runner-clean
 
 # Run full European collective simulation (full year)
 make runner

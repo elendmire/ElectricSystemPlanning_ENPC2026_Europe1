@@ -29,6 +29,10 @@ Usage:
     python main_runner.py --europe europe1
     python main_runner.py --europe europe2
 
+    # Clear previous runner outputs and history:
+    python main_runner.py --clean
+    python main_runner.py clean
+
     # Specify a custom folder or files:
     python main_runner.py custom_folder/
 """
@@ -69,6 +73,7 @@ from src.include_runner.investments_runner import (
     format_simulation_evolutions_table,
     display_simulation_evolutions,
     save_simulation_evolutions,
+    clear_runner_outputs,
 )
 
 
@@ -194,6 +199,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Do not display the simulation evolution history across successive runs",
     )
     parser.add_argument(
+        "--clean",
+        "--clear",
+        action="store_true",
+        dest="clean",
+        help="Clear runner outputs and simulation history in output/runner/ (or specified --output-dir) to prevent blurring incremental results",
+    )
+    parser.add_argument(
         "--period-start",
         default="1900/1/1",
         help="Simulation start date (default: '1900/1/1', full year)",
@@ -210,16 +222,38 @@ def main():
     parser = build_parser()
     args = parser.parse_args()
 
+    # Determine source mode and input targets
+    raw_targets = list(args.folder_or_files) if args.folder_or_files else []
+    source_mode = args.source
+
+    # Check if a positional keyword was used ('clean', 'clear', 'txt', or 'json')
+    is_clean_keyword = False
+    if raw_targets and len(raw_targets) == 1 and raw_targets[0].lower() in ("clean", "clear"):
+        args.clean = True
+        is_clean_keyword = True
+        raw_targets = []
+
+    # Handle cleaning runner outputs if requested
+    if args.clean:
+        removed = clear_runner_outputs(output_dir=args.output_dir)
+        if removed:
+            print(f"\n[OK] Cleared {len(removed)} output file(s) in '{args.output_dir}':")
+            for f in removed:
+                print(f"      - {f}")
+        else:
+            print(f"\n[i] Output directory '{args.output_dir}' is already clean (no files to remove).")
+
+        # If --clean or 'clean' was called standalone (no test, dry-run, or custom targets specified), exit cleanly
+        if is_clean_keyword or (not args.folder_or_files and not args.test and not args.dry_run and args.europe == "all"):
+            print("\nRunner output directory reset. Exiting.")
+            sys.exit(0)
+
     # Resolve simulation period (full year vs. 2-week test period)
     period_start, period_end = resolve_simulation_period(
         is_test=args.test,
         period_start=args.period_start,
         period_end=args.period_end,
     )
-
-    # Determine source mode and input targets
-    raw_targets = list(args.folder_or_files) if args.folder_or_files else []
-    source_mode = args.source
 
     # Check if a positional keyword was used ('txt' or 'json')
     if raw_targets and len(raw_targets) == 1 and raw_targets[0].lower() in ("txt", "json"):

@@ -42,6 +42,7 @@ from src.include_runner.investments_runner import (
     format_simulation_evolutions_table,
     display_simulation_evolutions,
     save_simulation_evolutions,
+    clear_runner_outputs,
 )
 from src.utils.read import read_and_check_uc_run_params, read_usage_params
 
@@ -800,6 +801,93 @@ class TestInvestmentsRunnerSimulationPeriod:
         )
         assert start == "1900/1/1"
         assert end == "1900/1/15"
+
+
+class TestInvestmentsRunnerCleanOutputs:
+    def test_clear_runner_outputs_removes_files_and_preserves_hidden_files(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            file_names = [
+                "comparison_europe1_vs_europe2_20261116_112515.json",
+                "comparison_europe1_vs_europe2_20261116_112515.txt",
+                "comparison_europe1_vs_europe2_latest.json",
+                "comparison_europe1_vs_europe2_latest.txt",
+                "history_evolutions_europe1.json",
+                "history_evolutions_europe1.txt",
+            ]
+            for fname in file_names:
+                fpath = os.path.join(tmpdir, fname)
+                with open(fpath, "w") as fp:
+                    fp.write("{}")
+
+            # Hidden file that must be preserved
+            keep_file = os.path.join(tmpdir, ".gitkeep")
+            with open(keep_file, "w") as fp:
+                fp.write("")
+
+            removed = clear_runner_outputs(output_dir=tmpdir)
+            assert len(removed) == 6
+            assert os.path.exists(keep_file)
+            remaining = os.listdir(tmpdir)
+            assert remaining == [".gitkeep"]
+
+            # Verify history load is now completely clean
+            history = load_simulation_history(output_dir=tmpdir, target_europe="europe1")
+            assert history == []
+
+    def test_clear_runner_outputs_nonexistent_directory(self):
+        removed = clear_runner_outputs(output_dir="/non/existent/path/for/clear/runner/test")
+        assert removed == []
+
+    def test_clear_runner_outputs_empty_directory(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            removed = clear_runner_outputs(output_dir=tmpdir)
+            assert removed == []
+
+    def test_main_runner_cli_clean_flags(self):
+        from main_runner import build_parser
+
+        parser = build_parser()
+        args_clean = parser.parse_args(["--clean"])
+        assert args_clean.clean is True
+
+        args_clear = parser.parse_args(["--clear"])
+        assert args_clear.clean is True
+
+        args_default = parser.parse_args([])
+        assert args_default.clean is False
+
+    def test_main_runner_clean_standalone_execution(self, monkeypatch):
+        from main_runner import main
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            test_file = os.path.join(tmpdir, "comparison_europe1_vs_europe2_20261116_112515.json")
+            with open(test_file, "w") as fp:
+                fp.write("{}")
+
+            monkeypatch.setattr("sys.argv", ["main_runner.py", "--output-dir", tmpdir, "--clean"])
+
+            with pytest.raises(SystemExit) as exc_info:
+                main()
+
+            assert exc_info.value.code == 0
+            assert not os.path.exists(test_file)
+
+    def test_main_runner_clean_keyword_execution(self, monkeypatch):
+        from main_runner import main
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            test_file = os.path.join(tmpdir, "history_evolutions_europe1.json")
+            with open(test_file, "w") as fp:
+                fp.write("{}")
+
+            monkeypatch.setattr("sys.argv", ["main_runner.py", "--output-dir", tmpdir, "clean"])
+
+            with pytest.raises(SystemExit) as exc_info:
+                main()
+
+            assert exc_info.value.code == 0
+            assert not os.path.exists(test_file)
+
 
 
 
