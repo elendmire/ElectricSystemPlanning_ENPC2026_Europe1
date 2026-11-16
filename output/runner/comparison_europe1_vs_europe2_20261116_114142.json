@@ -1,0 +1,584 @@
+{
+  "global": {
+    "total_cost_m_yr": {
+      "eur1": 37478.28589674827,
+      "eur2": 40482.24831311758,
+      "delta": 3003.962416369315,
+      "pct_change": 8.015207591524213
+    },
+    "total_operational_cost_m_yr": {
+      "eur1": 650.0,
+      "eur2": 487.0,
+      "delta": -163.0,
+      "pct_change": -25.076923076923073
+    },
+    "total_annualized_capex_m_yr": {
+      "eur1": 36828.28589674827,
+      "eur2": 39995.24831311758,
+      "delta": 3166.962416369315,
+      "pct_change": 8.599266404220405
+    },
+    "total_overnight_capex_b": {
+      "eur1": 595.375,
+      "eur2": 609.0,
+      "delta": 13.625,
+      "pct_change": 2.288473651060256
+    },
+    "avg_cost_per_mwh": {
+      "eur1": 783.7694152149455,
+      "eur2": 866.0786511727694,
+      "delta": 82.30923595782383,
+      "pct_change": 10.501715729140932
+    },
+    "total_co2_emissions_mt": {
+      "eur1": 1.701,
+      "eur2": 1.228,
+      "delta": -0.4730000000000001,
+      "pct_change": -27.807172251616702
+    },
+    "total_production_twh": {
+      "eur1": 47.818,
+      "eur2": 46.742,
+      "delta": -1.0760000000000005,
+      "pct_change": -2.250198669956921
+    },
+    "total_ens_mwh": {
+      "eur1": 6314.838651420652,
+      "eur2": 7379.3922744282745,
+      "delta": 1064.5536230076223,
+      "pct_change": 16.857970278751765
+    },
+    "max_failure_hours": {
+      "eur1": 231.0,
+      "eur2": 205.0,
+      "delta": -26.0,
+      "pct_change": -11.255411255411255
+    }
+  },
+  "per_country": {
+    "benelux": {
+      "total_cost_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "opex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "capex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "co2_mt": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "ens_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "failure_hours": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "production_gwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "cost_per_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      }
+    },
+    "france": {
+      "total_cost_m_yr": {
+        "eur1": 20419.757919079697,
+        "eur2": 20776.18932419316,
+        "delta": 356.4314051134643,
+        "pct_change": 1.7455221875104794
+      },
+      "opex_m_yr": {
+        "eur1": 212.0,
+        "eur2": 185.0,
+        "delta": -27.0,
+        "pct_change": -12.735849056603774
+      },
+      "capex_m_yr": {
+        "eur1": 20207.757919079697,
+        "eur2": 20591.18932419316,
+        "delta": 383.4314051134643,
+        "pct_change": 1.8974465482458953
+      },
+      "co2_mt": {
+        "eur1": 129.0,
+        "eur2": 145.0,
+        "delta": 16.0,
+        "pct_change": 12.4031007751938
+      },
+      "ens_mwh": {
+        "eur1": 373.10732571032577,
+        "eur2": 1389.1782744282746,
+        "delta": 1016.0709487179488,
+        "pct_change": 272.3267217505156
+      },
+      "failure_hours": {
+        "eur1": 59.0,
+        "eur2": 116.0,
+        "delta": 57.0,
+        "pct_change": 96.61016949152543
+      },
+      "production_gwh": {
+        "eur1": 26033.0,
+        "eur2": 24344.0,
+        "delta": -1689.0,
+        "pct_change": -6.487919179502939
+      },
+      "cost_per_mwh": {
+        "eur1": 784.37974567202,
+        "eur2": 853.4418881117796,
+        "delta": 69.06214243975955,
+        "pct_change": 8.804682020516776
+      }
+    },
+    "germany": {
+      "total_cost_m_yr": {
+        "eur1": 17057.52797766857,
+        "eur2": 19706.058988924426,
+        "delta": 2648.5310112558545,
+        "pct_change": 15.527050664804811
+      },
+      "opex_m_yr": {
+        "eur1": 437.0,
+        "eur2": 302.0,
+        "delta": -135.0,
+        "pct_change": -30.892448512585812
+      },
+      "capex_m_yr": {
+        "eur1": 16620.52797766857,
+        "eur2": 19404.058988924426,
+        "delta": 2783.5310112558545,
+        "pct_change": 16.747548663892154
+      },
+      "co2_mt": {
+        "eur1": 1.571,
+        "eur2": 1.083,
+        "delta": -0.488,
+        "pct_change": -31.06301718650541
+      },
+      "ens_mwh": {
+        "eur1": 5941.731325710326,
+        "eur2": 5990.214,
+        "delta": 48.48267428967392,
+        "pct_change": 0.8159688082812779
+      },
+      "failure_hours": {
+        "eur1": 231.0,
+        "eur2": 205.0,
+        "delta": -26.0,
+        "pct_change": -11.255411255411255
+      },
+      "production_gwh": {
+        "eur1": 21785.0,
+        "eur2": 22398.0,
+        "delta": 613.0,
+        "pct_change": 2.8138627495983477
+      },
+      "cost_per_mwh": {
+        "eur1": 782.9941692755829,
+        "eur2": 879.8133310529702,
+        "delta": 96.81916177738731,
+        "pct_change": 12.365246840466677
+      }
+    },
+    "iberian-peninsula": {
+      "total_cost_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "opex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "capex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "co2_mt": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "ens_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "failure_hours": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "production_gwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "cost_per_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      }
+    },
+    "italy": {
+      "total_cost_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "opex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "capex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "co2_mt": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "ens_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "failure_hours": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "production_gwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "cost_per_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      }
+    },
+    "poland": {
+      "total_cost_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "opex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "capex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "co2_mt": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "ens_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "failure_hours": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "production_gwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "cost_per_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      }
+    },
+    "scandinavia": {
+      "total_cost_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "opex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "capex_m_yr": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "co2_mt": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "ens_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "failure_hours": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "production_gwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      },
+      "cost_per_mwh": {
+        "eur1": 0.0,
+        "eur2": 0.0,
+        "delta": 0.0,
+        "pct_change": 0.0
+      }
+    }
+  },
+  "europe1_summary_file": "output/long_term_uc\\data\\uc-summary_europe_2033_cy1989_1900-01-01.json",
+  "europe2_summary_file": "output/long_term_uc\\data\\uc-summary_europe_2033_cy1989_1900-01-01.json",
+  "timestamp": "2026-11-16T11:41:42.685584",
+  "timestamp_str": "2026-11-16 11:41:42",
+  "europe1_metrics": {
+    "summary_file": "output/long_term_uc\\data\\uc-summary_europe_2033_cy1989_1900-01-01.json",
+    "total_cost_m_yr": 37478.28589674827,
+    "total_operational_cost_m_yr": 650.0,
+    "total_annualized_capex_m_yr": 36828.28589674827,
+    "total_overnight_capex_b": 595.375,
+    "avg_cost_per_mwh": 783.7694152149455,
+    "total_co2_emissions_mt": 1.701,
+    "total_production_gwh": 47818.0,
+    "total_production_twh": 47.818,
+    "total_ens_mwh": 6314.838651420652,
+    "max_failure_hours": 231.0,
+    "per_country": {
+      "benelux": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "france": {
+        "ens_mwh": 373.10732571032577,
+        "failure_hours": 59.0,
+        "opex_m_yr": 212.0,
+        "capex_m_yr": 20207.757919079697,
+        "total_cost_m_yr": 20419.757919079697,
+        "cost_per_mwh": 784.37974567202,
+        "co2_mt": 129.0,
+        "production_gwh": 26033.0
+      },
+      "germany": {
+        "ens_mwh": 5941.731325710326,
+        "failure_hours": 231.0,
+        "opex_m_yr": 437.0,
+        "capex_m_yr": 16620.52797766857,
+        "total_cost_m_yr": 17057.52797766857,
+        "cost_per_mwh": 782.9941692755829,
+        "co2_mt": 1.571,
+        "production_gwh": 21785.0
+      },
+      "iberian-peninsula": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "italy": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "poland": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "scandinavia": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      }
+    }
+  },
+  "europe2_metrics": {
+    "summary_file": "output/long_term_uc\\data\\uc-summary_europe_2033_cy1989_1900-01-01.json",
+    "total_cost_m_yr": 40482.24831311758,
+    "total_operational_cost_m_yr": 487.0,
+    "total_annualized_capex_m_yr": 39995.24831311758,
+    "total_overnight_capex_b": 609.0,
+    "avg_cost_per_mwh": 866.0786511727694,
+    "total_co2_emissions_mt": 1.228,
+    "total_production_gwh": 46742.0,
+    "total_production_twh": 46.742,
+    "total_ens_mwh": 7379.3922744282745,
+    "max_failure_hours": 205.0,
+    "per_country": {
+      "benelux": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "france": {
+        "ens_mwh": 1389.1782744282746,
+        "failure_hours": 116.0,
+        "opex_m_yr": 185.0,
+        "capex_m_yr": 20591.18932419316,
+        "total_cost_m_yr": 20776.18932419316,
+        "cost_per_mwh": 853.4418881117796,
+        "co2_mt": 145.0,
+        "production_gwh": 24344.0
+      },
+      "germany": {
+        "ens_mwh": 5990.214,
+        "failure_hours": 205.0,
+        "opex_m_yr": 302.0,
+        "capex_m_yr": 19404.058988924426,
+        "total_cost_m_yr": 19706.058988924426,
+        "cost_per_mwh": 879.8133310529702,
+        "co2_mt": 1.083,
+        "production_gwh": 22398.0
+      },
+      "iberian-peninsula": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "italy": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "poland": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      },
+      "scandinavia": {
+        "ens_mwh": 0.0,
+        "failure_hours": 0.0,
+        "opex_m_yr": 0.0,
+        "capex_m_yr": 0.0,
+        "total_cost_m_yr": 0.0,
+        "cost_per_mwh": 0.0,
+        "co2_mt": 0.0,
+        "production_gwh": 0.0
+      }
+    }
+  }
+}

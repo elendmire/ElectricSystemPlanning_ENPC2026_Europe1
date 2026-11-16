@@ -235,23 +235,19 @@ Even if not to be modified by the students, [input](../../input) folder contains
 
 In folder [output](../../output)
 
-Data obtaining after having run one of the scripts of this environment. Two main subfolders are distinguished:
-- **data_analysis**: for... data analysis script (XXX suppr ? XXX)
-- **long_term_uc**: for the 1-country/European UC simulation. In this second subfolder 1-country/European output 
-folders will be obtained, in which **data** (.csv files, and .lp with optim model solved) and **figures** (.png) 
-outputs will be separated 
-
-Normally the content of this folder is sufficiently detailed in students doc - Sec. II.4).
+**Data obtained after having run one of the scripts of this environment**. Two main subfolders are distinguished:
+- [data_analysis](../../output/data_analysis): for... data analysis script - **not used in EELISA2026 course**.
+- [long_term_uc](../../output/long_term_uc): for the 1-country/European UC simulation. This second subfolder content - **data** and **figures**: 
+  - Is described in detail in students doc [European-system_tutorial.md](../long_term_uc/European-system_tutorial.md) regarding the functionalities initially activated in this environment (see Sec. II.4).
+  - As for additional output data/figures - see section D of the present doc for optional parameters description in section to get a preliminar description.
 
 # F) More expert usage of this environment... its behaviour 
-
-**(TO BE FINALIZED)**
 
 Cf. parameters in [functional_params](../../src/functional_params), file by file:
 
 - [plot_params.json](../../src/functional_params/plot_params.json): a few parameters for (color) palette 
 definition - possibly using a standard one (e.g., the one of Eco2mix), linestyles, markers, orders of curves. 
-It can be done on different dimensions (production types, zones, years, etc.)
+It can be done on different dimensions (production types, zones, years, etc.).
 
 <br>
 
@@ -270,7 +266,7 @@ operations for the students. Per parameter:
   
     N.B. Not functional currently; could be used to integrate "exogeneous" Demand-Side-Response 
   (e.g. based on Time-of-Use tariff, set independently of the UC solution)
-  - <span style="color:#32B032; font-weight:bold">allow_manually_adding_generators</span>: ?? 
+  - <span style="color:#32B032; font-weight:bold">allow_manually_adding_generators</span>: to be more flexible regarding the modification of generation units - not being obliged to modify capacity values for prod types AVAILABLE IN ERAA data. 
     
     Default: false
     
