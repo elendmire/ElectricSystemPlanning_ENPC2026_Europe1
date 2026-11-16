@@ -92,6 +92,18 @@ Following are **additional info versus the ones detailed in** [European-system_t
     - (optional, in <span style="color:#32B032; font-weight:bold">extra_params</span> dictionary) <span style="color:#32B032; font-weight:bold">use_demand_adder_files</span>: use demand-adder files in folder [demand](../../input/long_term_uc/optional/demand). If present, their data will be added - per climatic year, and date - to the one of ERAA data (<span style="color:#257cbd; font-weight:bold">boolean</span>). 
   
       Default: false (and ERAA raw data from [demand](../../data/ERAA_2023-2/demand) will be used).
+  
+    - (optional) <span style="color:#32B032; font-weight:bold">demand_shaper_file</span>: JSON file, that must be in [demand](../../input/long_term_uc/optional/demand) (<span style="color:#257cbd; font-weight:bold">string</span>). It contains a dictionary of the following form
+  
+      ```json
+      {
+        "france": [1000, "demand-shaper_2033_france.csv"],
+        "germany": [2000]  
+      }
+      ```
+      inducing that France (resp. German) demand data will be vectorially-rescaled by the "shaper" profile in [demand-shaper_2033_france.csv](../../input/long_term_uc/optional/demand/demand-shaper_2033_france.csv) (not rescaled) and with a multiplicative constant so that the total demand on considered period be 1GWh (resp. 2GWh).
+      
+      N.B. (i) Shaper profile can contain only part of the dates of considered UC period; in this case it is completed with 1 values; (ii) Shaper profile must have an average value of 1; otherwise it will be rescaled to be normalized.
     - (optional) <span style="color:#32B032; font-weight:bold">add_date_tag_to_output</span>: to **add a tag indicating the run date** to the obtained data/figure output folders (<span style="color:#257cbd; font-weight:bold">boolean</span>). 
   
       Default: no such tag, in this case a previous run results may be overwritten.
