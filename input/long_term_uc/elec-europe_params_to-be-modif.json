@@ -35,5 +35,8 @@
     "scandinavia2italy": 0,
     "scandinavia2iberian-peninsula": 0,
     "germany2italy": 0
+  },
+  "extra_params": {
+    "demand_shaper_file": "demand_shaper_test.json"
   }
 }
