@@ -59,6 +59,7 @@ from src.include_runner.investments_runner import (
     format_incremental_capacities_summary_table,
     save_incremental_capacities_trajectory,
     get_tech_display_name,
+    sync_country_json_files,
 )
 from src.utils.read import read_and_check_uc_run_params, read_usage_params
 
@@ -1700,6 +1701,33 @@ class TestInvestmentsRunnerIncrementalCapacityTrajectory:
         sec5_lines = [l for l in table.splitlines() if "|" in l and ("hydro" in l or "nuclear" in l or "COUNTRY / TECH" in l)]
         first_pipe_indices = [l.index("|") for l in sec5_lines]
         assert len(set(first_pipe_indices)) == 1, f"Pipe misaligned in section [5]: {first_pipe_indices}"
+
+    def test_sync_country_json_files_cleans_inactive_files(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create inactive country json (e.g. benelux)
+            benelux_file = os.path.join(tmpdir, "benelux.json")
+            with open(benelux_file, "w") as fp:
+                fp.write("{}")
+
+            active_countries = ["france", "germany"]
+            caps = {
+                "france": {"nuclear": 50000.0},
+                "germany": {"wind_onshore": 60000.0},
+            }
+
+            sync_country_json_files(
+                active_countries=active_countries,
+                country_capacities=caps,
+                countries_dir=tmpdir,
+            )
+
+            # Active files must exist
+            assert os.path.isfile(os.path.join(tmpdir, "france.json"))
+            assert os.path.isfile(os.path.join(tmpdir, "germany.json"))
+
+            # Inactive file must be cleaned up to prevent PyPSA mismatch errors
+            assert not os.path.isfile(benelux_file)
+
 
 
 

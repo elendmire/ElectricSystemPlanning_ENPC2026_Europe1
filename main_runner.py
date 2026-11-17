@@ -87,6 +87,7 @@ from src.include_runner.investments_runner import (
     format_incremental_capacities_trajectory_table,
     format_incremental_capacities_summary_table,
     save_incremental_capacities_trajectory,
+    sync_country_json_files,
 )
 
 
@@ -102,10 +103,10 @@ def run_single_europe_simulation(
     Configure and execute simulation for one European mix, returning extracted metrics.
     """
     countries = sorted(list(country_capacities.keys()))
-    print(f"\n--- [CONFIGURING {europe_name.upper()}] ({len(countries)} countries) ---")
+    print(f"\n--- [CONFIGURING {europe_name.upper()}] ({len(countries)} countries: {', '.join(countries)}) ---")
+    sync_country_json_files(active_countries=countries, country_capacities=country_capacities)
     for country in countries:
-        json_path = write_country_json(country=country, capacities=country_capacities[country])
-        print(f"      -> {json_path} updated ({len(country_capacities[country])} assets)")
+        print(f"      -> input/long_term_uc/countries/{country}.json updated ({len(country_capacities[country])} assets)")
 
     # Update global parameters in elec-europe_params_to-be-modif.json
     update_europe_params(
@@ -113,12 +114,13 @@ def run_single_europe_simulation(
         team=countries[0],
         period_start=period_start,
         period_end=period_end,
+        selected_countries=countries,
     )
     is_full_year = (period_start == DEFAULT_PERIOD_START and period_end == DEFAULT_PERIOD_END)
     period_label = "full year period" if is_full_year else "simulation period"
     print(
         f"      -> Global parameters: mode='europe', {period_label} [{period_start} - {period_end}] "
-        f"activated in elec-europe_params_to-be-modif.json"
+        f"countries={countries} activated in elec-europe_params_to-be-modif.json"
     )
 
     if dry_run:
@@ -400,10 +402,12 @@ def main():
         if not args.no_compare_eraa:
             target_year = get_selected_target_year()
             climatic_year = get_selected_climatic_year()
+            active_eval_countries = sorted(list(set(sum([list(grouped_capas[e].keys()) for e in available_europes], []))))
             baseline_2025 = get_or_run_eraa_baseline(
                 eraa_year=2025,
                 period_start=period_start,
                 period_end=period_end,
+                countries=active_eval_countries,
                 target_year=target_year,
                 climatic_year=climatic_year,
                 output_dir=args.output_dir,
@@ -414,6 +418,7 @@ def main():
                 eraa_year=2033,
                 period_start=period_start,
                 period_end=period_end,
+                countries=active_eval_countries,
                 target_year=target_year,
                 climatic_year=climatic_year,
                 output_dir=args.output_dir,
@@ -482,10 +487,12 @@ def main():
         if not args.no_compare_eraa:
             target_year = get_selected_target_year()
             climatic_year = get_selected_climatic_year()
+            active_eval_countries = sorted(list(set(sum([list(grouped_capas[e].keys()) for e in available_europes], []))))
             baseline_2025 = get_or_run_eraa_baseline(
                 eraa_year=2025,
                 period_start=period_start,
                 period_end=period_end,
+                countries=active_eval_countries,
                 target_year=target_year,
                 climatic_year=climatic_year,
                 output_dir=args.output_dir,
@@ -496,6 +503,7 @@ def main():
                 eraa_year=2033,
                 period_start=period_start,
                 period_end=period_end,
+                countries=active_eval_countries,
                 target_year=target_year,
                 climatic_year=climatic_year,
                 output_dir=args.output_dir,
