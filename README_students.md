@@ -3,8 +3,8 @@
 This code will help you simulate your own European electric system. It is written in Python, using the [PyPSA](https://pypsa.org/) library to build Unit Commitment (UC) models, and it relies on the ERAA (European Resource Adequacy Assessment) dataset.
 
 The repository supports two complementary use cases:
-1. **Data Crunch**: Analyze ERAA raw data, capacity factors, residual demand, and explore power mix sizing in the interactive notebook (`data_crunch.ipynb`).
-2. **European Unit Commitment (European mode)**: Simulate multi-country or single-country dispatch and optimal power flow across Europe (`my_little_europe_lt_uc.py`).
+1. **European Unit Commitment (European mode)**: Simulate multi-country or single-country dispatch and optimal power flow across Europe (available on all branches).
+2. **Data Crunch**: Analyze ERAA raw data, capacity factors, residual demand, and run exploratory notebooks (`main` branch).
 
 ## Requirements 
 
@@ -16,13 +16,13 @@ The repository supports two complementary use cases:
 ### Preferred: Run remotely with GitHub Codespaces (an online VS Code running in GitHub infrastructure)
 
 1. Select the **Codespaces** tab on the repository page.
-2. Click **Create codespace on main**.
+2. Click **Create codespace on main** (or on `main-full`).
 3. Your Codespace is configuring... Please wait:  
    ![step 3, configuring](./.assets/img/building_codespace.png)
-4. Your Codespace is ready! You can open the notebook `data_crunch.ipynb` or the simulation script `my_little_europe_lt_uc.py` and run it:  
+4. Your Codespace is ready! You can open the Python example script and run it:  
    ![step 4, ready](./.assets/img/ready.png)
 
-> **Note for Jupyter Notebooks in Codespaces (`data_crunch.ipynb`)**:  
+> **Note for Jupyter Notebooks in Codespaces (e.g. `data_crunch.ipynb`)**:  
 > The codespace automatically installs dependencies and sets up a dedicated Jupyter kernel named **`project`** (Python 3.11). When opening a notebook, click **Select Kernel** $\rightarrow$ **Python Environments...** $\rightarrow$ choose the **`project`** kernel (or the recommended Python 3.11 environment).
 
 
@@ -144,7 +144,7 @@ By default, the code uses the open-source solver **HiGHS**, which works out of t
 * **Place your `gurobi.lic` file at the root of your project directory** (drag and drop in VS Code):  
   ![license 3/3](./.assets/img/gurobi_license3.png)
 
-Finally, edit [`input/_env_params/solver_params.json`](input/_env_params/solver_params.json) to set your solver to `"gurobi"` and specify your license file:
+Finally, edit [`input/long_term_uc/solver_params.json`](input/long_term_uc/solver_params.json) to set your solver to `"gurobi"` and specify your license file:
 ```json
 {
   "name": "gurobi",
@@ -161,28 +161,17 @@ Finally, edit [`input/_env_params/solver_params.json`](input/_env_params/solver_
 * `data/` : Input data from ERAA 2023-2 (hourly demand, generation capacities, hydro parameters, interconnection capacities, RES capacity factors) and fuel/technology data.
 * `input/` : User configuration parameters:
   * `input/long_term_uc/` : Parameters for the European long-term UC model (global configuration and per-country overrides in `countries/`).
-  * `input/_env_params/` : Environment and solver settings (`solver_params.json`, etc.).
 * `output/` : Simulation outputs (generated CSV data tables, network LP formulation, summary JSON, and plotted figures).
-* `doc/` : Documentation and tutorials:
-  * `doc/data-analysis/` : Data crunch notebook guide (`datacrunch_notebook.md`).
+* `doc/` : Detailed documentation and tutorials:
   * `doc/long_term_uc/` : European UC tutorial (`European-system_tutorial.md`).
-  * `doc/glossary.md` : Project glossary.
-  * `doc/useful_references.md` : Useful energy references and links.
+  * `doc/data-analysis/` : Data crunch and data analysis tutorials and guide.
 * **Main entry point scripts** (at the root of the repository):
-  * `data_crunch.ipynb` : Interactive data exploration and power mix sizing notebook.
   * `my_little_europe_lt_uc.py` : Main script for the European Unit Commitment simulation.
-
+  * `data_crunch.ipynb` : Interactive data exploration notebook.
 
 ## Quick Start
 
-### 1. Data Crunch Mode
-
-* **Interactive notebook**: `data_crunch.ipynb`
-* **Detailed guide**: see [`doc/data-analysis/datacrunch_notebook.md`](doc/data-analysis/datacrunch_notebook.md).
-
----
-
-### 2. European Unit Commitment Mode
+### 1. European Mode (All branches / Student course)
 
 * **Main entry script**: `my_little_europe_lt_uc.py`
   ```bash
@@ -195,3 +184,13 @@ Finally, edit [`input/_env_params/solver_params.json`](input/_env_params/solver_
     `input/long_term_uc/countries/{country}.json`  
     *(Example files [`france.json`](input/long_term_uc/countries/france.json) and [`germany.json`](input/long_term_uc/countries/germany.json) are provided. Available ERAA country nodes are: `benelux`, `france`, `germany`, `iberian-peninsula`, `italy`, `poland`, `scandinavia`)*.
 * **Detailed tutorial**: see [`doc/long_term_uc/European-system_tutorial.md`](doc/long_term_uc/European-system_tutorial.md).
+
+---
+
+### 2. Data Crunch Mode (`main` branch)
+
+
+* **Interactive notebook**: `data_crunch.ipynb`
+* **Detailed tutorial**: see [`doc/data-analysis/datacrunch_notebook.md`](doc/data-analysis/datacrunch_notebook.md).
+
+---
