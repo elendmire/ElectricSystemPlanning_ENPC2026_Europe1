@@ -74,6 +74,19 @@ from src.include_runner.investments_runner import (
     display_simulation_evolutions,
     save_simulation_evolutions,
     clear_runner_outputs,
+    load_eraa_country_capacities,
+    format_installed_capacities_table,
+    display_installed_capacities,
+    format_capacity_comparison_table,
+    get_selected_target_year,
+    get_selected_climatic_year,
+    get_or_run_eraa_baseline,
+    compute_four_way_comparison,
+    format_four_way_comparison_table,
+    load_all_simulation_runs,
+    format_incremental_capacities_trajectory_table,
+    format_incremental_capacities_summary_table,
+    save_incremental_capacities_trajectory,
 )
 
 
@@ -189,9 +202,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--history-europe",
-        choices=["europe1", "europe2"],
-        default="europe1",
-        help="Europe configuration to track across historical simulations (default: 'europe1')",
+        choices=["all", "europe1", "europe2"],
+        default="all",
+        help="Europe configuration to track across historical simulations: 'all', 'europe1', or 'europe2' (default: 'all')",
     )
     parser.add_argument(
         "--no-history",
@@ -204,6 +217,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         dest="clean",
         help="Clear runner outputs and simulation history in output/runner/ (or specified --output-dir) to prevent blurring incremental results",
+    )
+    parser.add_argument(
+        "--no-compare-eraa",
+        action="store_true",
+        help="Do not compare results with pure ERAA 2025 and ERAA 2033 baselines",
+    )
+    parser.add_argument(
+        "--force-eraa-run",
+        action="store_true",
+        help="Force re-running PyPSA simulation for ERAA baselines even if cached in output/runner/baselines/",
     )
     parser.add_argument(
         "--period-start",
@@ -312,6 +335,38 @@ def main():
         for c in c_list:
             print(f"      - {c:<18} <- {grouped_srcs[eur][c]} ({len(grouped_capas[eur][c])} assets)")
 
+    # Display installed capacities and comparison with ERAA references (2025 and 2033)
+    eraa_2025_capas = load_eraa_country_capacities(year=2025)
+    eraa_2033_capas = load_eraa_country_capacities(year=2033)
+    history_runs = load_all_simulation_runs(output_dir=args.output_dir)
+
+    for eur in available_europes:
+        capa_table = format_installed_capacities_table(
+            country_capacities=grouped_capas[eur],
+            title=f"INSTALLED CAPACITIES - {eur.upper()} (GW)",
+        )
+        display_installed_capacities(capa_table)
+
+    # Unified Incremental Capacity Trajectory across ERAA references and successive runs
+    traj_table = format_incremental_capacities_trajectory_table(
+        eraa_2025_capas=eraa_2025_capas,
+        eraa_2033_capas=eraa_2033_capas,
+        history_runs=history_runs,
+        current_europe1_capas=grouped_capas.get("europe1"),
+        current_europe2_capas=grouped_capas.get("europe2"),
+    )
+    print("\n" + traj_table)
+
+    summary_traj_table = format_incremental_capacities_summary_table(
+        eraa_2025_capas=eraa_2025_capas,
+        eraa_2033_capas=eraa_2033_capas,
+        history_runs=history_runs,
+        current_europe1_capas=grouped_capas.get("europe1"),
+        current_europe2_capas=grouped_capas.get("europe2"),
+    )
+    if summary_traj_table:
+        print("\n" + summary_traj_table)
+
     # Case A: Two Europes are present and requested -> Sequential run + Comparison
     if len(available_europes) >= 2 and "europe1" in grouped_capas and "europe2" in grouped_capas:
         print("\n" + "=" * 76)
@@ -336,6 +391,46 @@ def main():
             dry_run=args.dry_run,
         )
 
+        # Baseline ERAA simulations (cached)
+        baseline_2025 = None
+        baseline_2033 = None
+        four_way_data = None
+        four_way_report = None
+
+        if not args.no_compare_eraa:
+            target_year = get_selected_target_year()
+            climatic_year = get_selected_climatic_year()
+            baseline_2025 = get_or_run_eraa_baseline(
+                eraa_year=2025,
+                period_start=period_start,
+                period_end=period_end,
+                target_year=target_year,
+                climatic_year=climatic_year,
+                output_dir=args.output_dir,
+                dry_run=args.dry_run,
+                force_run=args.force_eraa_run,
+            )
+            baseline_2033 = get_or_run_eraa_baseline(
+                eraa_year=2033,
+                period_start=period_start,
+                period_end=period_end,
+                target_year=target_year,
+                climatic_year=climatic_year,
+                output_dir=args.output_dir,
+                dry_run=args.dry_run,
+                force_run=args.force_eraa_run,
+            )
+            if baseline_2025 or baseline_2033:
+                four_way_data = compute_four_way_comparison(
+                    metrics_eur1=metrics_eur1,
+                    metrics_eur2=metrics_eur2,
+                    metrics_eraa2025=baseline_2025,
+                    metrics_eraa2033=baseline_2033,
+                )
+                four_way_report = format_four_way_comparison_table(four_way_data)
+                if not args.no_summary:
+                    print("\n" + four_way_report)
+
         if args.dry_run:
             print("\n[INFO] --dry-run completed: both Europe 1 and Europe 2 configurations validated.")
             return
@@ -356,6 +451,10 @@ def main():
                 filename_prefix="comparison_europe1_vs_europe2",
                 metrics_eur1=metrics_eur1,
                 metrics_eur2=metrics_eur2,
+                metrics_eraa2025=baseline_2025,
+                metrics_eraa2033=baseline_2033,
+                four_way_comparison=four_way_data,
+                four_way_report=four_way_report,
             )
             print(f"\n[OK] Comparative summary successfully saved:")
             print(f"     -> Text report : {txt_file}")
@@ -374,6 +473,46 @@ def main():
             dry_run=args.dry_run,
         )
 
+        # Baseline ERAA simulations (cached)
+        baseline_2025 = None
+        baseline_2033 = None
+        four_way_data = None
+        four_way_report = None
+
+        if not args.no_compare_eraa:
+            target_year = get_selected_target_year()
+            climatic_year = get_selected_climatic_year()
+            baseline_2025 = get_or_run_eraa_baseline(
+                eraa_year=2025,
+                period_start=period_start,
+                period_end=period_end,
+                target_year=target_year,
+                climatic_year=climatic_year,
+                output_dir=args.output_dir,
+                dry_run=args.dry_run,
+                force_run=args.force_eraa_run,
+            )
+            baseline_2033 = get_or_run_eraa_baseline(
+                eraa_year=2033,
+                period_start=period_start,
+                period_end=period_end,
+                target_year=target_year,
+                climatic_year=climatic_year,
+                output_dir=args.output_dir,
+                dry_run=args.dry_run,
+                force_run=args.force_eraa_run,
+            )
+            if baseline_2025 or baseline_2033:
+                four_way_data = compute_four_way_comparison(
+                    metrics_eur1=metrics if single_eur == "europe1" else None,
+                    metrics_eur2=metrics if single_eur == "europe2" else None,
+                    metrics_eraa2025=baseline_2025,
+                    metrics_eraa2033=baseline_2033,
+                )
+                four_way_report = format_four_way_comparison_table(four_way_data)
+                if not args.no_summary:
+                    print("\n" + four_way_report)
+
         if args.dry_run:
             print(f"\n[INFO] --dry-run completed for {single_eur}.")
             return
@@ -389,23 +528,50 @@ def main():
                 summary_file_path=metrics["summary_file"],
             )
 
-    # 5. Simulation Evolution Tracking across successive runs (for target Europe, default: europe1)
+    # 5. Simulation Evolution Tracking across successive runs (Europe 1 and Europe 2)
     if not args.dry_run and not args.no_history:
-        target_eur = args.history_europe
-        history = load_simulation_history(output_dir=args.output_dir, target_europe=target_eur)
-        if len(history) >= 2:
-            evol_data = compute_simulation_evolutions(history)
-            evol_table = format_simulation_evolutions_table(evol_data, target_europe=target_eur)
-            display_simulation_evolutions(evol_table)
-            hist_txt, hist_json = save_simulation_evolutions(
-                evolution_data=evol_data,
-                report_text=evol_table,
-                output_dir=args.output_dir,
-                target_europe=target_eur,
+        if args.history_europe == "all":
+            history_europes_to_process = [e for e in ("europe1", "europe2") if e in available_europes]
+            if not history_europes_to_process:
+                history_europes_to_process = ["europe1", "europe2"]
+        else:
+            history_europes_to_process = [args.history_europe]
+
+        for target_eur in history_europes_to_process:
+            history = load_simulation_history(output_dir=args.output_dir, target_europe=target_eur)
+            if len(history) >= 2:
+                evol_data = compute_simulation_evolutions(
+                    history=history,
+                    eraa_2025_capas=eraa_2025_capas,
+                    eraa_2033_capas=eraa_2033_capas,
+                )
+                evol_table = format_simulation_evolutions_table(evol_data, target_europe=target_eur)
+                display_simulation_evolutions(evol_table)
+                hist_txt, hist_json = save_simulation_evolutions(
+                    evolution_data=evol_data,
+                    report_text=evol_table,
+                    output_dir=args.output_dir,
+                    target_europe=target_eur,
+                )
+                print(f"[i] Simulation evolution history ({target_eur.upper()}) saved to:")
+                print(f"    -> Text report : {hist_txt}")
+                print(f"    -> JSON metrics: {hist_json}\n")
+
+    # Save the updated incremental capacity trajectory table to output/runner/
+    if not args.dry_run:
+        updated_history = load_all_simulation_runs(output_dir=args.output_dir)
+        if updated_history:
+            updated_traj_table = format_incremental_capacities_trajectory_table(
+                eraa_2025_capas=eraa_2025_capas,
+                eraa_2033_capas=eraa_2033_capas,
+                history_runs=updated_history,
             )
-            print(f"[i] Simulation evolution history saved to:")
-            print(f"    -> Text report : {hist_txt}")
-            print(f"    -> JSON metrics: {hist_json}\n")
+            traj_txt = save_incremental_capacities_trajectory(
+                report_text=updated_traj_table,
+                output_dir=args.output_dir,
+            )
+            print(f"[i] Incremental capacity trajectory saved to:")
+            print(f"    -> Text report : {traj_txt}\n")
 
 
 if __name__ == "__main__":

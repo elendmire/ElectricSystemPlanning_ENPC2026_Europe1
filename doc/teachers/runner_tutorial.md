@@ -142,6 +142,18 @@ make runner-clean
 ```
 You can also combine `--clean` with simulation flags (e.g., `python main_runner.py --clean --test`) to clean previous outputs before starting a fresh run.
 
+### Comparison with Official ENTSO-E ERAA Baselines (2025 & 2033)
+The runner automatically compares student investment mixes (Europe 1 and Europe 2) against the official **ERAA 2025** (starting mix) and **ERAA 2033** (target roadmap) baseline simulations:
+- **Baseline Caching**: pure ERAA simulations for the simulated test year and period are automatically computed and cached in `output/runner/baselines/` on their first execution. Subsequent runs reload the cache instantaneously (0 additional solver time).
+- **Disable Baseline Comparison**: use `--no-compare-eraa` if you only wish to compare Europe 1 vs Europe 2 without running or loading ERAA baselines:
+  ```bash
+  python main_runner.py --no-compare-eraa
+  ```
+- **Force Baseline Recalculation**: use `--force-eraa-run` to regenerate the baseline cache (e.g. after updating input files or solver parameters):
+  ```bash
+  python main_runner.py --force-eraa-run
+  ```
+
 ### Custom Files or Folders
 You can also specify a custom collection directory or specific files:
 ```bash
@@ -165,7 +177,66 @@ make runner
 
 ---
 
-## 5. Results and Interpretation
+## 5. Capacity Visibility and ERAA Comparisons
+
+### 5.1. Installed Capacities Table 
+Right upon parsing investment choices, the runner displays an aligned capacity table in **GW** for each country and for Europe as a whole, accessible immediately even in `--dry-run`:
+- Per-technology columns: Nuclear, Solar PV, Wind Onshore, Wind Offshore, Hydro Reservoir, Hydro RoR, Hydro PHS (Closed/Open), Batteries, DSR, Gas, and Other.
+- Summary columns:
+  - **Total Capa (GW)**
+  - **Low-Carbon / Decarbonized Share (%)**: proportion of non-fossil generation, storage and flexibility.
+  - **Overnight CAPEX (B€)**: total initial capital expenditure.
+  - **Annualized CAPEX (M€/year)**: annual capital recovery annuity based on WACC and asset lifetime.
+
+### 5.2. Capacity Comparison with ERAA References (2025 & 2033)
+The runner evaluates student choices against official ENTSO-E PEMMDB data:
+- **$\Delta$ vs ERAA 2025 (GW / %)**: net capacity additions since the 2025 European starting point.
+- **$\Delta$ vs ERAA 2033 (GW / %)**: difference relative to the official 2033 ENTSO-E trajectory.
+
+### 5.3. Incremental Capacity Trajectory across ERAA References and Historical Runs
+To clearly track the progression of choices across rounds and compare them to the official references, the runner generates a unified multi-column capacity trajectory table (`output/runner/history_capacities_trajectory.txt`):
+```text
+============================================================================================================================================
+              INCREMENTAL CAPACITY TRAJECTORY: ERAA REFERENCES vs SUCCESSIVE RUNS (GW)
+============================================================================================================================================
+Country / Technology           ERAA 2025   ERAA 2033    Run 1 (E1)  Run 1 (E2)    Run 2 (E1)  Run 2 (E2)     Δ Net (E1)     Δ Net (E2)
+--------------------------------------------------------------------------------------------------------------------------------------------
+[FRANCE]
+  nuclear                           61.8        61.8          50.0        50.0          55.0        50.0           +5.0            0.0
+  solar_pv                          18.2        54.3          45.0        40.0          48.0        42.0           +3.0           +2.0
+  wind_onshore                      24.1        36.1          35.0        30.0          36.0        32.0           +1.0           +2.0
+  wind_offshore                      2.0        11.6          15.0        12.0          15.0        14.0            0.0           +2.0
+  hydro_reservoir                    9.5         9.8           8.5         8.5           8.5         8.5            0.0            0.0
+  hydro_run_of_river                13.6        13.6           4.5         4.5           4.5         4.5            0.0            0.0
+  hydro_pump_storage_closed_loop     2.0         2.1           5.0         4.0           5.0         5.0            0.0           +1.0
+  hydro_pump_storage_open_loop       1.8         2.0           1.0         1.0           1.0         1.0            0.0            0.0
+  batteries                          0.5         0.5           6.0         4.0           8.0         5.0           +2.0           +1.0
+  dsr                                4.2         5.6           3.5         3.0           4.0         3.5           +0.5           +0.5
+  gas                                7.2         7.2           3.0         5.0           2.0         4.0           -1.0           -1.0
+  Total france                     154.3       210.4         176.5       162.0         187.0       169.0          +10.5           +7.0
+--------------------------------------------------------------------------------------------------------------------------------------------
+...
+[TOTAL EUROPE]
+  ...
+============================================================================================================================================
+```
+This table gives teachers and students an immediate, intuitive view of:
+1. **Starting Point**: ERAA 2025.
+2. **Roadmap Objective**: ERAA 2033.
+3. **Round-by-Round Progression**: Run 1 (E1 & E2) $\to$ Run 2 (E1 & E2) $\to$ Latest Run.
+4. **Net Adjustments**: Total additions/retirements made between the first and last run ($\Delta_{\text{net}}$).
+
+Additionally, across iterative runs, individual simulation history files (`history_evolutions_europe1.txt`) track capacity deltas under section `[5] CAPACITY EVOLUTION ACROSS SUCCESSIVE RUNS (GW)`.
+
+### 5.4. Unified 4-Way Comparative Dashboard
+When both Europe 1, Europe 2, and the ERAA baselines (2025 and 2033) are simulated:
+- **Global Table**: compares Europe 1 | Europe 2 | ERAA 2025 | ERAA 2033 | $\Delta$(E1 - ERAA33) | $\Delta$(E2 - ERAA33).
+- **Per-Country Breakdown**: side-by-side comparison of costs, CO2 emissions, and loss-of-load hours across all 4 configurations.
+- **Persisted Outputs**: saved in `output/runner/comparison_europe1_vs_europe2_YYYYMMDD_HHMMSS.txt` and `.json`.
+
+---
+
+## 6. Simulation Results and Interpretation
 
 At the end of a collective simulation, the runner outputs the European comparative dashboard including both **operational costs (OPEX)** and **annualized investment costs (CAPEX)**:
 
