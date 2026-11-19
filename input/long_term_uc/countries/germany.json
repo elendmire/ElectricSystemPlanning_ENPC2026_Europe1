@@ -15,14 +15,14 @@
   },
   "capacities_tb_overwritten": {
     "germany": {
-      "wind_onshore": 75000.0,
-      "wind_offshore": 28000.0,
-      "solar_pv": 80000.0,
-      "hydro_run_of_river": 4000.0,
+      "wind_onshore": 100000.0,
+      "wind_offshore": 40000.0,
+      "solar_pv": 116000.0,
+      "hydro_run_of_river": 6000.0,
       "hydro_pump_storage_closed_loop": 6000.0,
-      "batteries": 12000.0,
+      "batteries": 50000.0,
       "dsr": 4500.0,
-      "gas": 18000.0
+      "gas": 36000.0
     }
   }
 }
